@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Halls</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4c4c8e, #88a0d3);
+            color: #fff;
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: #fff;
+            margin: 20px 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: #3b3b7c;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #d3d3d3;
+            font-weight: bold;
+        }
+
+        /* List Styles */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 500px;
+        }
+
+        ul li {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Button Styles */
+        a.button {
+            display: inline-block;
+            background: #4c4c8e;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        a.button:hover {
+            background: #3b3b7c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>STC UNIBOOK</h1>
+    </div>
+
+    <!-- Content -->
+    <h1>Available Halls </h1>
+    {% if available_halls %}
+        <ul>
+            {% for hall in available_halls %}
+                <li>
+                    <img src="{{ hall.image.url }}" alt="{{ hall.name }}" style="width:100%;max-width:200px;border-radius:8px;margin-bottom:10px;">
+                    <h3>{{ hall.name }}</h3>
+                    <p>Capacity: {{ hall.capacity }}</p>
+                    <a href="{% url 'request_hall_booking' hall.id %}" class="button">Book Now</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No halls available for the given criteria.</p>
+    {% endif %}
+
+    <!-- Go Back Button -->
+    <a href="{% url 'event_form' %}" class="button">Go Back</a>
+</body>
+</html>

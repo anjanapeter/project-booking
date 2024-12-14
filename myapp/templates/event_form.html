@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STC UNIBOOK - Event Suggestion Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4c4c8e, #88a0d3);
+            color: #333;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #4c4c8e;
+            padding: 10px 20px;
+            color: #fff;
+        }
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-icons i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-icons i:hover {
+            color: #d3d3d3;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        form button {
+            background: #4c4c8e;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        form button:hover {
+            background: #3b3b7c;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>STC UNIBOOK</h1>
+        <div class="nav-icons">
+            <i class="fa fa-home" title="Home"></i>
+            <i class="fa fa-calendar" title="Calendar"></i>
+            <i class="fa fa-bell" title="Notifications"></i>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Enter Details, We Will Give You Suggestions</h2>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <label for="department_name">Department Name:</label>
+            <input type="text" name="department_name" required><br><br>
+    
+            <label for="event_name">Event Name:</label>
+            <input type="text" name="event_name" required><br><br>
+    
+            <label for="num_students">Number of Students:</label>
+            <input type="number" name="num_students" required><br><br>
+    
+            <label for="event_date">Event Date:</label>
+            <input type="date" name="event_date" required><br><br>
+    
+            <label for="start_time">Event Start Time:</label>
+            <input type="time" name="start_time" required><br><br>
+    
+            <label for="end_time">Event End Time:</label>
+            <input type="time" name="end_time" required><br><br>
+    
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

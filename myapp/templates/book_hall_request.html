@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Hall Request</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4c4c8e, #88a0d3);
+            color: #fff;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: 36px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        form label {
+            display: block;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        form input, form textarea, form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        form input, form textarea {
+            font-size: 14px;
+            color: #333;
+        }
+
+        form input:focus, form textarea:focus {
+            outline: none;
+            box-shadow: 0 0 5px #4c4c8e;
+        }
+
+        form textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        form button {
+            background: #4c4c8e;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        form button:hover {
+            background: #3b3b7c;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: #3b3b7c;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #d3d3d3;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>STC UNIBOOK</h1>
+    </div>
+
+    <!-- Form Content -->
+    <div class="form-container">
+        <h1>Book Hall Request</h1>
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="department_name">Department Name:</label>
+            <input type="text" name="department_name" required>
+
+            <label for="event_name">Event Name:</label>
+            <input type="text" name="event_name" required>
+
+            <label for="num_students">Number of Students:</label>
+            <input type="number" name="num_students" required>
+
+            <label for="event_date">Event Date:</label>
+            <input type="date" name="event_date" required>
+
+            <label for="start_time">Start Time:</label>
+            <input type="time" name="start_time" required>
+
+            <label for="end_time">End Time:</label>
+            <input type="time" name="end_time" required>
+
+            <label for="faculty_coordinator_name">Faculty Coordinator Name:</label>
+            <input type="text" name="faculty_coordinator_name" required>
+
+            <label for="faculty_coordinator_mobile">Faculty Coordinator Mobile:</label>
+            <input type="text" name="faculty_coordinator_mobile" required>
+
+            <label for="student_coordinator_name">Student Coordinator Name:</label>
+            <input type="text" name="student_coordinator_name" required>
+
+            <label for="student_coordinator_mobile">Student Coordinator Mobile:</label>
+            <input type="text" name="student_coordinator_mobile" required>
+
+            <label for="event_description">Event Description:</label>
+            <textarea name="event_description" required></textarea>
+
+            <button type="submit">Request Booking</button>
+        </form>
+    </div>
+</body>
+</html>

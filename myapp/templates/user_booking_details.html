@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 20px;
+        }
+        p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        strong {
+            font-weight: bold;
+        }
+        .info-section {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .info-section:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Booking Details</h1>
+        <div class="info-section">
+            <p><strong>Event Name:</strong> {{ booking_request.event_name }}</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Department Name:</strong> {{ booking_request.department_name }}</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Number of Students:</strong> {{ booking_request.num_students }}</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Event Date:</strong> {{ booking_request.event_date }}</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Start Time:</strong> {{ booking_request.start_time }}</p>
+        </div>
+        <div class="info-section">
+            <p><strong>End Time:</strong> {{ booking_request.end_time }}</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Faculty Coordinator:</strong> {{ booking_request.faculty_coordinator_name }} ({{ booking_request.faculty_coordinator_mobile }})</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Student Coordinator:</strong> {{ booking_request.student_coordinator_name }} ({{ booking_request.student_coordinator_mobile }})</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Status:</strong> {{ booking_request.status }}</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Event Description:</strong> {{ booking_request.event_description }}</p>
+        </div>
+       
+    </div>
+</body>
+</html>

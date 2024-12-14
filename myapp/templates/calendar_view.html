@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STC Unibook - Hall Booking Calendar</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .controls select {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .calendar div {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .calendar div:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover {
+            background-color: #c0392b;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        ul li {
+            margin: 5px 0;
+            padding: 5px;
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        ul li:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>STC Unibook - Hall Booking Calendar</h1>
+
+    <div class="controls">
+        <select id="monthSelect" onchange="renderCalendar()">
+            <!-- Populated dynamically -->
+        </select>
+        <select id="yearSelect" onchange="renderCalendar()">
+            <!-- Populated dynamically -->
+        </select>
+    </div>
+
+    <div id="calendar" class="calendar"></div>
+</div>
+
+<!-- Modal for displaying available halls -->
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="modal">
+    <h2>Available Halls</h2>
+    <ul id="hallList"></ul>
+    <button class="close-btn" onclick="closeModal()">Close</button>
+</div>
+
+<script>
+    const calendar = document.getElementById('calendar');
+    const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+    const hallList = document.getElementById('hallList');
+    const monthSelect = document.getElementById('monthSelect');
+    const yearSelect = document.getElementById('yearSelect');
+
+    const today = new Date();
+    let selectedYear = today.getFullYear();
+    let selectedMonth = today.getMonth();
+
+    // Populate month and year selectors
+    function populateControls() {
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        // Populate months
+        months.forEach((month, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = month;
+            if (index === selectedMonth) option.selected = true;
+            monthSelect.appendChild(option);
+        });
+
+        // Populate years (current year and next 5 years)
+        for (let i = today.getFullYear() - 2; i <= today.getFullYear() + 5; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            if (i === selectedYear) option.selected = true;
+            yearSelect.appendChild(option);
+        }
+    }
+
+    // Render calendar
+    function renderCalendar() {
+        selectedYear = parseInt(yearSelect.value);
+        selectedMonth = parseInt(monthSelect.value);
+
+        const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+        const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
+
+        calendar.innerHTML = '';
+
+        // Empty slots before the 1st day
+        for (let i = 0; i < firstDay; i++) {
+            const emptyDiv = document.createElement('div');
+            calendar.appendChild(emptyDiv);
+        }
+
+        // Calendar days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.textContent = day;
+            dayDiv.addEventListener('click', () => fetchAvailableHalls(selectedYear, selectedMonth + 1, day));
+            calendar.appendChild(dayDiv);
+        }
+    }
+
+    // Fetch available halls for a date
+    async function fetchAvailableHalls(year, month, day) {
+        const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+        try {
+            const response = await axios.get(`/api/hall_suggestions/?date=${date}`);
+            const halls = response.data.halls;
+
+            hallList.innerHTML = '';
+            if (halls.length > 0) {
+                halls.forEach(hall => {
+                    const li = document.createElement('li');
+                    li.textContent = hall.name;
+                    hallList.appendChild(li);
+                });
+            } else {
+                hallList.innerHTML = '<li>No halls available for the selected date.</li>';
+            }
+
+            openModal();
+        } catch (error) {
+            alert('Error fetching hall suggestions');
+            console.error(error);
+        }
+    }
+
+    // Open modal
+    function openModal() {
+        modal.style.display = 'block';
+        overlay.style.display = 'block';
+    }
+
+    // Close modal
+    function closeModal() {
+        modal.style.display = 'none';
+        overlay.style.display = 'none';
+    }
+
+    populateControls();
+    renderCalendar();
+</script>
+
+</body>

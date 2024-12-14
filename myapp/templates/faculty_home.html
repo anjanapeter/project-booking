@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STC UNIBOOK - Faculty Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4c4c8e, #88a0d3);
+            color: #333;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #4c4c8e;
+            padding: 10px 20px;
+            color: #fff;
+        }
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .nav-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-icons i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-icons i:hover {
+            color: #e8e2e2;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            height: calc(100vh - 60px);
+        }
+        .left-section {
+            flex: 1;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/2/2b/ST_Thomas_College_Thrissur.jpg') no-repeat center center/cover;
+            position: relative;
+        }
+        .left-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            height: 100%;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .left-overlay h1 {
+            font-size: 28px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .left-overlay h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background: #f8f9fa;
+            color: #333;
+        }
+        .right-section h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #4c4c8e;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .button {
+            background: #4c4c8e;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background 0.3s;
+        }
+        .button:hover {
+            background: #3b3b7c;
+            transform: translateY(-5px);
+        }
+        .button i {
+            margin-right: 10px;
+        }
+        .button a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>STC UNIBOOK</h1>
+        <div class="nav-icons">
+            <a href="/notifications/"><i class="fa fa-bell" title="Notifications"></i></a>
+            <a href="/calendar/"><i class="fa fa-calendar" title="Calendar"></i></a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Left section with image and overlay -->
+        <div class="left-section">
+            <div class="left-overlay">
+                <h1>St. Thomas (Autonomous) College</h1>
+                <h2>Thrissur</h2>
+                <p>Welcome Faculty, book halls and buses here.</p>
+            </div>
+        </div>
+
+        <!-- Right section with buttons -->
+        <div class="right-section">
+            <h2>Welcome, Faculty Member</h2>
+            <div class="buttons">
+                <div class="button">
+                    <a href="/event_form/"><i class="fa fa-building"></i> Hall Booking</a>
+                </div>
+                <div class="button">
+                    <i class="fa fa-bus"></i> Bus Booking
+                </div>
+                <div class="button">
+                    <i class="fa fa-eye"></i> View Bookings
+                </div>
+                <div class="button">
+                    <a href="/calendar_view/"><i class="fa fa-check-circle"></i> Book by Availability</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
