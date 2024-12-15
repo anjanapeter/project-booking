@@ -16,4 +16,7 @@ urlpatterns = [
     path('api/calendar-events/', views.calendar_events, name='calendar_events'),
     path('calendar_view/', views.calendar_view, name='calendar_view'),
     path('api/hall_suggestions/', views.hall_suggestions_api, name='hall_suggestions_api'),
+    path('view_bookings/', views.view_bookings, name='view_bookings'),
+    path('upload_report/<int:booking_id>/', views.upload_report, name='upload_report'),
+    path('delete_report/<int:booking_id>/', views.delete_report, name='delete_report'),
 ]

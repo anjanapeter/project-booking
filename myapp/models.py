@@ -38,10 +38,15 @@ class HallBookingRequest(models.Model):
         max_length=20, choices=[('Pending', 'Pending'), ('Approved', 'Approved'), ('Canceled', 'Canceled')],
         default='Pending'
     )
+    report_upload = models.FileField(upload_to='reports/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Request for {self.event_name} by {self.department_name}"
+
+
+
+
 # from django.contrib.auth.models import AbstractUser
 
 # class CustomUser(AbstractUser):

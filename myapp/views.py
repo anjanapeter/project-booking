@@ -192,18 +192,7 @@ def calendar_events(request):
         for booking in bookings
     ]
     return JsonResponse(events, safe=False)
-# from django.http import JsonResponse
-# from .models import Hall
 
-# def hall_suggestions_api(request):
-#     date = request.GET.get('date')  # Get selected date from request
-#     # Query available halls (assuming "is_booked" flag exists)
-#     available_halls = Hall.objects.filter(is_booked=False)
-
-#     data = {
-#         'halls': [{'id': hall.id, 'name': hall.name} for hall in available_halls]
-#     }
-#     return JsonResponse(data)
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Hall
@@ -232,23 +221,55 @@ def hall_suggestions_api(request):
 
     return JsonResponse({'halls': halls_data})
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from .models import HallBookingRequest
+from django.core.exceptions import ValidationError
+from django.shortcuts import render
+from .models import HallBookingRequest
+
+def view_bookings(request):
+    # Fetch all approved bookings and their associated hall data
+    approved_bookings = HallBookingRequest.objects.filter(status='Approved').select_related('hall')
+    
+    # Pass the approved bookings to the template
+    return render(request, 'view_bookings.html', {'approved_bookings': approved_bookings})
 
 
-# def hall_suggestions_api(request):
-#     """
-#     API endpoint to fetch available halls for a specific date.
-#     """
-#     # Get the date parameter from the API call
-#     selected_date = request.GET.get('date', None)
+def upload_report(request, booking_id):
+    booking = get_object_or_404(HallBookingRequest, id=booking_id)
+    
+    if request.method == 'POST' and request.FILES['report']:
+        report = request.FILES['report']
+        
+        # Ensure the file is an image or PDF
+        if not (report.content_type.startswith('image') or report.content_type == 'application/pdf'):
+            return HttpResponse('Invalid file type. Please upload an image or PDF.', status=400)
+        
+        # Save the report to the booking
+        booking.report_upload = report
+        booking.save()
+        
+        return redirect('view_bookings')  # Redirect to the view bookings page after upload
+    else:
+        return HttpResponse('Invalid request', status=400)
+from django.shortcuts import render, redirect
+from django.http import Http404
+from .models import HallBookingRequest
 
-#     if selected_date:
-#         # Filter halls that are not booked for the selected date
-#         # You can expand this logic if your `Hall` model tracks bookings per date
-#         available_halls = Hall.objects.filter(is_booked=False)
+def delete_report(request, booking_id):
+    try:
+        booking = HallBookingRequest.objects.get(id=booking_id)
+    except HallBookingRequest.DoesNotExist:
+        raise Http404("Booking not found")
 
-#         # Prepare response data
-#         halls_data = [{'id': hall.id, 'name': hall.name} for hall in available_halls]
-#         return JsonResponse({'halls': halls_data})
-#     else:
-#         return JsonResponse({'error': 'Invalid date'}, status=400)
+    # Delete the uploaded report if it exists
+    if booking.report_upload:
+        # Delete the file from the server
+        booking.report_upload.delete()
+        # Set the report_upload field to None (null)
+        booking.report_upload = None
+        booking.save()
 
+    # Redirect to the view_bookings page after deletion
+    return redirect('view_bookings')

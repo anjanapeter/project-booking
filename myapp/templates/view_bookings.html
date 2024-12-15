@@ -1,0 +1,148 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approved Hall Bookings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1.title {
+            text-align: center;
+            color: #333;
+        }
+
+        table.booking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table.booking-table th,
+        table.booking-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        table.booking-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        table.booking-table td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        table.booking-table td a:hover {
+            text-decoration: underline;
+        }
+
+        .upload-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover {
+            background-color: #218838;
+        }
+
+        .no-report {
+            color: red;
+            font-weight: bold;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+            margin-right: 10px;
+        }
+        .delete-btn {
+        color: red;
+        text-decoration: none;
+        font-weight: bold;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    .delete-btn:hover {
+        text-decoration: underline;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Approved Hall Booking Details</h1>
+        
+        <table class="booking-table">
+            <thead>
+                <tr>
+                    <th>Department Name</th>
+                    <th>Event Name</th>
+                    <th>Hall Allotted</th>
+                    <th>Event Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Report Upload</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in approved_bookings %}
+                <tr>
+                    <td>{{ booking.department_name }}</td>
+                    <td>{{ booking.event_name }}</td>
+                    <td>{{ booking.hall.name }}</td>
+                    <td>{{ booking.event_date }}</td>
+                    <td>{{ booking.start_time }}</td>
+                    <td>{{ booking.end_time }}</td>
+                    <td>
+                        {% if booking.report_upload %}
+                            <a href="{{ booking.report_upload.url }}" target="_blank">View Report</a> |
+                            <form action="{% url 'delete_report' booking.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-btn">Delete Report</button>
+                            </form>
+                        {% else %}
+                            <span class="no-report">No Report Uploaded</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{% url 'upload_report' booking.id %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" name="report" accept="image/*, .pdf" required>
+                            <button type="submit" class="upload-btn">Upload Report</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
